@@ -1,0 +1,44 @@
+{% load static %}
+{% load poll_extras %}
+
+<script>
+    function handlClose() {
+        document.getElementById("cart-component").style.right = "-100vw"
+    }
+
+    function goAndReload(id) {
+        window.open(`/remove_product/${id}`, '_blank', 'location=yes')
+        window.location.reload()
+    }
+</script>
+<div id="cart-component" class="cart-component">
+    <button onclick="handlClose()" class="close-cart">close</button>
+    <h1>My cart</h1>
+    <div id="re-render" class="products-in-cart-component">
+        {% with ""|get_cart_products as cart_products %}
+        {% for cart_product in cart_products %}
+        <div class="cart-component-product">
+            <img alt="i-m-g" src="{{HOST_URL}}/uploads/images/{{cart_product.product.thumbnail}}">
+            <div class="p-info-and-options">
+                <div>
+                    <h5>{{cart_product.product.title}}</h5>
+                    <h6>quantity: {{cart_product.productQuantity}}</h6>
+                    <h6>price: {{cart_product.product.price}}</h6>
+                    {% with cart_product.product.price|multply_to_numbers:cart_product.productQuantity as total %}
+                    <h6>total: {{total}} </h6>
+                    {% endwith %}
+                </div>
+                <a target="_blank" onclick="goAndReload('{{cart_product.id}}')" class="btn btn-danger btn-xs"
+                    name="submit" value="addtocard">
+                    remove
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+        {% with ""|get_cart_products_total_price as total %}
+        <h4>Total: {{total}}</h4>
+        {% endwith %}
+    </div>
+
+</div>

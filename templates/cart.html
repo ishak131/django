@@ -1,0 +1,50 @@
+{%load static%}
+{% load poll_extras %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Zay Shop eCommerce HTML CSS Template</title>
+    <link rel="stylesheet" href="{% static 'assets/css/cart.css' %}">
+    {% include "head_content.html" %}
+</head>
+
+<body>
+    {% include "header.html" %}
+    {% with ""|get_cart_products_total_price as total %}
+    <h4 class="total">Total: {{total}}</h4>
+    {% endwith %}
+    <div class="row products">
+        {% with ""|get_cart_products as cart_products %}
+        {% for cart_product in cart_products %}
+        <div class="col-12 col-md-4 mb-4">
+            <div class="card h-100">
+                <a href="/shop-single.html/{{cart_product.product.id}}">
+                    <img src="{{HOST_URL}}/uploads/images/{{cart_product.product.thumbnail}}" class="card-img-top"
+                        alt="...">
+                </a>
+                <div class="card-body">
+                    <a href="/shop-single.html/{{cart_product.product.id}}"
+                        class="h2 text-decoration-none text-dark">{{cart_product.product.title}}</a>
+                    <p class="card-text">
+                        {{cart_product.product.caption}}
+                    </p>
+                    <h6>quantity: {{cart_product.productQuantity}}</h6>
+                    <h6>price: {{cart_product.product.price}}</h6>
+                    {% with cart_product.product.price|multply_to_numbers:cart_product.productQuantity as total %}
+                    <h6>total: {{total}} </h6>
+                    {% endwith %}
+                    <a target="_blank" onclick="goAndReload('{{cart_product.id}}')" class="btn btn-danger btn-xs"
+                        name="submit" value="addtocard">
+                        remove
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
+    {% include "footer.html" %}
+</body>
+
+</html>
