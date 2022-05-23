@@ -13,7 +13,9 @@
 </script>
 <div id="cart-component" class="cart-component">
     <button onclick="handlClose()" class="close-cart">close</button>
-    <h1>My cart</h1>
+    <a href="/cart" st class="link-success" target="_blank">
+        <h1> My cart </h1>
+    </a>
     <div id="re-render" class="products-in-cart-component">
         {% with ""|get_cart_products as cart_products %}
         {% for cart_product in cart_products %}
